@@ -12,6 +12,7 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String)
     created_at = db.Column(db.DateTime, default = datetime.now)
     updated_at = db.Column(db.DateTime, default = datetime.now, onupdate = datetime.now)
+    user_images = db.relationship("UserImage", backref = "userf")
 
     @property
     def password(self):
@@ -23,6 +24,8 @@ class User(db.Model, UserMixin):
     
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
     
     def is_duplicate_email(self):
         return User.query.filter_by(email=self.email).first() is not None
